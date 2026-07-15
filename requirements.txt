@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+langchain-groq
+python-dotenv
+PyGithub
+sqlalchemy
+streamlit
+plotly
+pandas
+requests
