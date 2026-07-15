@@ -1,8 +1,7 @@
 # 🛠️ CI/CD Failure Analyzer
 
-**An autonomous AI agent that diagnoses GitHub Actions failures, identifies root causes, and posts suggested fixes directly as PR comments.**
+**An autonomous AI agent that diagnoses GitHub Actions failures, identifies root causes, and posts fixes as PR comments — so developers don't have to dig through CI logs manually.**
 
-![Status](https://img.shields.io/badge/status-in%20development-yellow)
 ![Python](https://img.shields.io/badge/python-3.10+-blue)
 ![FastAPI](https://img.shields.io/badge/backend-FastAPI-009688)
 ![Streamlit](https://img.shields.io/badge/UI-Streamlit-FF4B4B)
@@ -10,18 +9,15 @@
 
 ## 🚀 Overview
 
-CI/CD pipelines fail all the time — flaky tests, dependency mismatches, misconfigured YAML, environment drift — and debugging them usually means a developer manually digging through logs. **CI/CD Failure Analyzer** automates that first pass: it watches for failed GitHub Actions runs, pulls the logs, uses an LLM to reason about the root cause, and posts a clear, actionable explanation (with a suggested fix) as a comment on the relevant pull request.
+When a CI/CD pipeline fails, the usual next step is a developer manually scrolling through hundreds of lines of build logs to figure out what broke. **CI/CD Failure Analyzer** automates that entirely: it listens for failed GitHub Actions runs, reads the full log, uses an LLM to reason about the root cause, and posts a clear diagnosis with a suggested fix directly as a comment on the pull request.
 
-The goal is to cut the time between "pipeline turned red" and "I know what broke" from minutes of log-spelunking to a single automated comment.
+## ✨ What It Does
 
-## ✨ Key Features
-
-- **Automatic failure detection** — listens for failed GitHub Actions workflow runs
-- **Log ingestion & parsing** — pulls raw CI logs via the GitHub API and extracts the relevant error context
-- **LLM-powered root cause analysis** — uses Llama 3.3 70B to reason over stack traces/log output and identify *why* the pipeline failed, not just *that* it failed
-- **Automated PR comments** — posts a human-readable diagnosis and suggested fix directly on the pull request
-- **FastAPI backend** — handles GitHub webhooks, log retrieval, and orchestrates the analysis pipeline
-- **Streamlit dashboard** — lets you inspect past failures, view agent reasoning, and test the analyzer manually
+- **Receives GitHub Actions failures via webhook** — the agent is triggered automatically the moment a workflow run fails, no manual polling
+- **Reads the full log automatically** — pulls and parses the complete failure log through the GitHub API
+- **Diagnoses the root cause using an LLM** — Llama 3.3 70B reasons over the log content to identify *why* the pipeline failed (dependency conflict, test failure, misconfiguration, etc.), not just where
+- **Posts the diagnosis as a PR comment** — the fix and explanation land directly where the developer is already working, no context-switching
+- **Dashboard of failures and patterns** — a Streamlit interface surfaces past failures and recurring root-cause patterns across runs, so teams can spot systemic issues, not just one-off bugs
 
 ## 🧱 Tech Stack
 
@@ -29,29 +25,19 @@ The goal is to cut the time between "pipeline turned red" and "I know what broke
 |---|---|
 | LLM / Reasoning | Llama 3.3 70B |
 | Backend / API | FastAPI |
-| UI / Dashboard | Streamlit |
+| Dashboard | Streamlit |
 | CI Source | GitHub Actions API + Webhooks |
-| Deployment (planned) | Railway |
 
 ## 🔍 How It Works
 
-1. A GitHub Actions workflow fails → a webhook event fires
-2. FastAPI backend receives the event and fetches the failed job's logs
-3. Logs are cleaned/chunked and passed to Llama 3.3 70B with a diagnostic prompt
-4. The model identifies the likely root cause and proposes a fix
+1. A GitHub Actions workflow fails → a webhook event fires to the FastAPI backend
+2. The backend fetches the failed job's full log via the GitHub API
+3. The log is parsed and passed to Llama 3.3 70B with a diagnostic prompt
+4. The model identifies the root cause and generates a fix recommendation
 5. The agent posts the diagnosis as a comment on the associated PR
-6. Everything is also viewable in the Streamlit dashboard for manual review
+6. The Streamlit dashboard shows the full history of failures, diagnoses, and recurring patterns across the repo
 
-## 🚧 Project Status
-
-This project is **actively in development**. Core log-parsing and LLM diagnosis logic is functional; GitHub webhook integration and Railway deployment are in progress. Next milestones:
-
-- [ ] Finish webhook → FastAPI event pipeline
-- [ ] Deploy backend + dashboard to Railway
-- [ ] Add support for multi-job workflow failures
-- [ ] Expand root-cause taxonomy (test flakiness vs. dependency vs. infra errors)
-
-## 🏗️ Local Setup
+## 🏗️ Setup
 
 ```bash
 git clone https://github.com/Niranjana20055/cicd-failure-analyzer.git
@@ -64,3 +50,5 @@ uvicorn main:app --reload
 # dashboard
 streamlit run app.py
 ```
+
+**Deployment:** Backend and dashboard are configured for deployment on Railway.
