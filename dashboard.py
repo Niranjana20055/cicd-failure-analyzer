@@ -145,13 +145,71 @@ logs = get_all_logs()
 
 if not logs:
     st.markdown("""
-    <div style="text-align:center;padding:80px;color:#334155;">
-        <div style="font-size:40px;margin-bottom:12px;">⚡</div>
-        <div style="font-size:16px;font-weight:600;color:#475569;margin-bottom:8px;">
-            No failures analyzed yet
+    <div style="text-align:center;padding:60px 24px;">
+        <div style="font-size:48px;margin-bottom:16px;">⚡</div>
+        <div style="font-size:20px;font-weight:700;color:#F1F5F9;margin-bottom:8px;">
+            CI/CD Failure Analyzer is Live
         </div>
-        <div style="font-size:13px;color:#334155;">
-            Trigger a GitHub Actions failure to see the analyzer in action
+        <div style="font-size:14px;color:#475569;margin-bottom:32px;line-height:1.6;">
+            The AI agent is running and listening for GitHub Actions failures.<br>
+            Trigger a workflow failure to see the dashboard populate in real time.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.markdown("""
+        <div style="background:rgba(13,17,30,0.8);border:1px solid rgba(99,70,245,0.2);
+        border-radius:12px;padding:20px;text-align:center;">
+            <div style="font-size:28px;margin-bottom:8px;">🔗</div>
+            <div style="font-size:13px;font-weight:600;color:#818CF8;margin-bottom:6px;">
+                Step 1
+            </div>
+            <div style="font-size:12px;color:#475569;">
+                Connect your GitHub repo via webhook pointing to the Railway server
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    with col2:
+        st.markdown("""
+        <div style="background:rgba(13,17,30,0.8);border:1px solid rgba(99,70,245,0.2);
+        border-radius:12px;padding:20px;text-align:center;">
+            <div style="font-size:28px;margin-bottom:8px;">💥</div>
+            <div style="font-size:13px;font-weight:600;color:#818CF8;margin-bottom:6px;">
+                Step 2
+            </div>
+            <div style="font-size:12px;color:#475569;">
+                Trigger a GitHub Actions workflow failure in your connected repo
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    with col3:
+        st.markdown("""
+        <div style="background:rgba(13,17,30,0.8);border:1px solid rgba(99,70,245,0.2);
+        border-radius:12px;padding:20px;text-align:center;">
+            <div style="font-size:28px;margin-bottom:8px;">🤖</div>
+            <div style="font-size:13px;font-weight:600;color:#818CF8;margin-bottom:6px;">
+                Step 3
+            </div>
+            <div style="font-size:12px;color:#475569;">
+                AI diagnoses the failure and this dashboard populates automatically
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown("""
+    <div style="background:rgba(99,70,245,0.06);border:1px solid rgba(99,70,245,0.2);
+    border-radius:12px;padding:20px 24px;max-width:600px;margin:32px auto 0;">
+        <div style="font-size:13px;font-weight:600;color:#818CF8;margin-bottom:12px;">
+            ⚡ AI Agent Status
+        </div>
+        <div style="font-size:12px;color:#64748B;line-height:2;font-family:monospace;">
+            ✅ FastAPI webhook server — Railway (Live 24/7)<br>
+            ✅ Llama 3.3 70B via Groq — Ready<br>
+            ✅ GitHub webhook — Connected<br>
+            ✅ PR comment bot — Active<br>
+            ⏳ Waiting for first failure...
         </div>
     </div>
     """, unsafe_allow_html=True)
