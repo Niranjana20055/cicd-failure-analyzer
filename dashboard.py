@@ -260,6 +260,7 @@ else:
         "🗂️  Full Log"
     ])
 
+    
     # TAB 1 - ANALYTICS
     with tab1:
         col1, col2 = st.columns(2, gap="large")
